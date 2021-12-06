@@ -62,7 +62,7 @@
                             <a href="https://strava.com/athletes/{{ $user->strava_id }}" target="_blank" class="btn btn-sm btn-outline-warning btn-block">STRAVA Профиль</a><br>
                         @endif
 
-                        @if($user->id === auth()->user()->id)
+                        @if(auth()->user() && $user->id === auth()->user()->id)
                             <a href="{{ route('users.edit', auth()->user()->id) }}" class="btn btn-sm btn-outline-default btn-block">Ред. Профиль</a><br>
                             <a href="{{ route('activities.create') }}" class="btn btn-sm btn-block btn-neutral">Добавить пробежку</a><br>
 
