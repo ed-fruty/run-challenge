@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Редактирование профиля
+    Run Winter - Редактирование профиля
 @endsection
 
 

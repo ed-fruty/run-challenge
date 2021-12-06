@@ -1,7 +1,7 @@
 @extends('argon.layouts.argon')
 
 @section('title')
-    Run Winter
+    Run Winter - Правила
 @endsection
 
 @section('content')

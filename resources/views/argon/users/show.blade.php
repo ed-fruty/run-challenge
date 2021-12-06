@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Профиль {{ $user->name }} {{ $user->surname }}
+    Run Winter -  Профиль {{ $user->name }} {{ $user->surname }}
 @endsection
 
 

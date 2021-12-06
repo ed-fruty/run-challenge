@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Добавить пробежку
+    Run Winter - Добавить пробежку
 @endsection
 
 

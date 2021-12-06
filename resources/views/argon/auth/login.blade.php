@@ -1,5 +1,9 @@
 @extends('argon.layouts.argon')
 
+@section('title')
+    Run Winter - Вход
+@endsection
+
 @section('content')
 <div class="wrapper">
     <section class="section section-shaped">

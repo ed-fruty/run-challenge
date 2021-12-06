@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Мои пробежки
+   Run Winter - Мои пробежки
 @endsection
 
 

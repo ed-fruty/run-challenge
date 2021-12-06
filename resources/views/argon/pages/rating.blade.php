@@ -1,7 +1,7 @@
 @extends('argon.layouts.argon')
 
 @section('title')
-    Рейтинг
+    Run Winter - Рейтинг
 @endsection
 
 @section('content')
