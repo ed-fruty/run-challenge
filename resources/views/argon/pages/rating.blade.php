@@ -10,7 +10,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10 text-center">
                         <h2 class="display-3">Рейтинг</h2>
-                        <table class="table table-hover table-borderless datatable-2">
+                        <table class="table table-hover table-borderless datatable">
                             <thead>
                             <tr>
                                 <th></th>
@@ -46,11 +46,11 @@
 @section('js')
     <script>
         $(document).ready( function () {
-            $('.datatable-2').DataTable({
+            $('.datatable').DataTable({
                 language: {
                     url: "http://cdn.datatables.net/plug-ins/1.10.20/i18n/Russian.json"
                 },
-                order: [[ 5, "desc" ]],
+                order: [[ 4, "desc" ]],
                 "info":     false,
                 "paging":   false,
             });
