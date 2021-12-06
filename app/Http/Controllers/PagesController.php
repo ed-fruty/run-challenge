@@ -45,18 +45,32 @@ class PagesController extends Controller
 
     public function cities()
     {
-        $cities = Activity::query()
+//        $cities = Activity::query()
+//            ->select([
+//                \DB::raw('sum(distance) as distance'),
+//                \DB::raw('count(id) as activities')
+//            ])
+//            ->with('user')
+//            ->groupBy('city')
+//            ->get();
+
+
+        $cities = User::query()
             ->select([
                 'city',
-                'country',
-                \DB::raw('sum(distance) as distance'),
-                \DB::raw('count(id) as activities')
+                'country'
             ])
+            ->withCount('activities')
+            ->withSum('activities', 'distance')
             ->groupBy('city')
             ->get();
 
         return view('argon.pages.cities', [
-            'cities' => $cities
+            'cities' => $cities->map(static function ($city) {
+                $city->distance = round($city->activities_sum_distance / 1000, 2);
+
+                return $city;
+            }),
         ]);
     }
 }

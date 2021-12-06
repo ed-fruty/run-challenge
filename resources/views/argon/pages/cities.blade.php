@@ -13,7 +13,6 @@
                         <table class="table table-hover table-borderless datatable">
                             <thead>
                             <tr>
-                                <th class="text-center">#</th>
                                 <th>Страна</th>
                                 <th>Город</th>
                                 <th>Дистанция</th>
@@ -23,11 +22,10 @@
                             <tbody>
                             @foreach($cities as $city)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $city->country ?? 'Не указано' }}</td>
                                     <td>{{ $city->city ?? 'Не указано' }}</td>
-                                    <td>{{ $city->getDistanceInKm() }} км</td>
-                                    <td>{{ $city->activities }}</td>
+                                    <td>{{ $city->distance }} км</td>
+                                    <td>{{ $city->activities_count }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -36,4 +34,19 @@
                 </div>
             </div>
         </div>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready( function () {
+            $('.datatable').DataTable({
+                language: {
+                    url: "http://cdn.datatables.net/plug-ins/1.10.20/i18n/Russian.json"
+                },
+                order: [[ 2, "asc" ]],
+                "info":     false,
+                "paging":   false,
+            });
+        } );
+    </script>
 @endsection

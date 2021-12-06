@@ -13,7 +13,6 @@
                         <table class="table table-hover table-borderless datatable-2">
                             <thead>
                             <tr>
-                                <th class="text-center">#</th>
                                 <th></th>
                                 <th>Участник</th>
                                 <th>Кол-во пробежек</th>
@@ -24,7 +23,6 @@
                             <tbody>
                             @foreach($rating as $user)
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">
                                         @if($user->photo_url)
                                             <img src="{{ $user->photo_url }}" alt="" class="avatar avatar-xs rounded-circle">
