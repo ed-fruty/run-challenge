@@ -232,4 +232,11 @@ return [
 
     ],
 
+    'challenge' => [
+        'start_date' => env('CHALLENGE_START_DATE', '2021-01-01'),
+        'finish_date' => env('CHALLENGE_FINISH_DATE', '2022-02-28'),
+        'min_distance' => env('CHALLENGE_MIN_DISTANCE', 3000),
+        'min_week_runs' => env('CHALLENGE_WEEK_MIN_RUNS', 6),
+        'min_speed_km_per_hour' => env('CHALLENGE_MIN_SPEED_KM_PER_HOUR', 7)
+    ]
 ];

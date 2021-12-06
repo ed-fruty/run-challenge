@@ -1,0 +1,103 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Jobs\LoadStravaActivities;
+use App\Models\User;
+use App\Services\Strava\DTO\UserActivityQuery;
+use App\Services\Strava\DTO\UserTokenResponse;
+use App\Services\Strava\StravaIntegration;
+use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+
+class StravaController extends Controller
+{
+    /**
+     * @var StravaIntegration
+     */
+    private $strava;
+
+    /**
+     * @param StravaIntegration $strava
+     */
+    public function __construct(StravaIntegration $strava)
+    {
+        $this->strava = $strava;
+    }
+
+    /**
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function redirect()
+    {
+        return $this->strava->authenticate();
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function callback(Request $request): RedirectResponse
+    {
+        $attributes = $request->only('code', 'scope', 'error');
+
+        if (isset($attributes['error'])) {
+            return redirect()->route('pages.index');
+        }
+
+        try {
+            $userToken = $this->strava->token((string) $attributes['code']);
+        } catch (\Throwable $exception) {
+            session()->flash('status', 'Что-то пошло не так.');
+
+            return redirect()->route('pages.index');
+        }
+
+        /** @var User $user */
+        $user = User::query()->where('strava_id', $userToken->getId())->first();
+
+        if ($user) {
+            $user->update([
+                'strava_access_token' => $userToken->getAccessToken(),
+                'strava_refresh_token' => $userToken->getRefreshToken(),
+                'strava_token_expires_at' => $userToken->getExpireAt(),
+                'strava_scopes' => $attributes['scope'],
+                'photo_url' => $userToken->getProfile(),
+            ]);
+        } else {
+            $user = User::query()->create([
+                'name' => $userToken->getFirstName(),
+                'surname' => $userToken->getLastName(),
+                'email' => $userToken->getEmail(),
+                'email_verified_at' => now(),
+                'password' => bcrypt($userToken->getId()),
+
+                'strava_id' => $userToken->getId(),
+                'strava_access_token' => $userToken->getAccessToken(),
+                'strava_refresh_token' => $userToken->getRefreshToken(),
+                'strava_token_expires_at' => $userToken->getExpireAt(),
+                'strava_scopes' => $attributes['scope'],
+                'strava_last_synced_at' => Carbon::parse('2020-01-01 00:00:00'),
+
+                'photo_url' => $userToken->getProfile(),
+                'country' => $userToken->getCountry(),
+                'city' => $userToken->getCity(),
+
+            ]);
+        }
+
+        auth()->login($user);
+
+        $queryBefore = Carbon::parse(config('app.challenge.finish_date'))->getTimestamp();
+        $queryAfter = Carbon::parse(config('app.challenge.start_date'))->getTimestamp();
+        $activityQuery = new UserActivityQuery(1, 100, $queryBefore, $queryAfter);
+
+        $this->dispatch(new LoadStravaActivities($user, $activityQuery));
+
+        return redirect()->route('home');
+    }
+}

@@ -8,6 +8,19 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col-md-3 offset-4">
+                            <a
+                                href="{{ route('auth.strava.redirect') }}"
+                                class="btn btn-warning px-3"
+                                style="background-color: darkorange"
+                            >Войти через Strava</a>
+                        </div>
+                    </div>
+
+                    <hr>
+
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 

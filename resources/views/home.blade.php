@@ -15,6 +15,11 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
+
+                    {!! dump(auth()->user())  !!}
+
+                    {!! dump(auth()->user()->activities) !!}
                 </div>
             </div>
         </div>
