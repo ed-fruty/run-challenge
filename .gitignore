@@ -16,3 +16,4 @@ yarn-error.log
 /public/images/activities
 /public/images/users
 .DS_Store
+public/webstat
