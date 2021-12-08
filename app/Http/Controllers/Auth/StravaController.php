@@ -9,6 +9,7 @@ use App\Services\Strava\DTO\UserActivityQuery;
 use App\Services\Strava\DTO\UserTokenResponse;
 use App\Services\Strava\StravaIntegration;
 use Carbon\Carbon;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,9 +40,10 @@ class StravaController extends Controller
 
     /**
      * @param Request $request
+     * @param Dispatcher $bus
      * @return RedirectResponse
      */
-    public function callback(Request $request): RedirectResponse
+    public function callback(Request $request, Dispatcher $bus): RedirectResponse
     {
         $attributes = $request->only('code', 'scope', 'error');
 
@@ -58,10 +60,11 @@ class StravaController extends Controller
         }
 
         /** @var User $user */
-        $user = User::query()->where('strava_id', $userToken->getId())->first();
+        $user = auth()->user() ?: User::query()->where('strava_id', $userToken->getId())->first();
 
         if ($user) {
             $user->update([
+                'strava_id' => $userToken->getId(),
                 'strava_access_token' => $userToken->getAccessToken(),
                 'strava_refresh_token' => $userToken->getRefreshToken(),
                 'strava_token_expires_at' => $userToken->getExpireAt(),
@@ -94,7 +97,7 @@ class StravaController extends Controller
 
         $query = UserActivityQuery::createForUser($user);
 
-        $this->dispatch(new LoadStravaActivities($user, $query));
+        $bus->dispatch(new LoadStravaActivities($user, $query));
 
         return redirect()->route('home');
     }
