@@ -46,6 +46,8 @@ class StravaSyncActivity extends Command
      */
     public function handle() : int
     {
+        $this->info(sprintf('[%s] Start strava synchronization.', now()->toDateTimeString()));
+
         User::query()
             ->whereNotNull('strava_id')
             ->orderBy('strava_last_synced_at')
@@ -68,7 +70,7 @@ class StravaSyncActivity extends Command
                 $this->info('Wake up.');
             });
 
-        $this->info('Job done successfully.');
+        $this->info(sprintf('[%s] Synchronization done.', now()->toDateTimeString()));
 
         return self::SUCCESS;
     }
