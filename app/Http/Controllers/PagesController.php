@@ -57,12 +57,13 @@ class PagesController extends Controller
 
         $cities = User::query()
             ->select([
-                'city',
-                'country'
+                'users.country',
+                'users.city',
+                \DB::raw('sum(distance) as activities_sum_distance'),
+                \DB::raw('count(activities.id) as activities_count')
             ])
-            ->withCount('activities')
-            ->withSum('activities', 'distance')
-            ->groupBy('city')
+            ->join('activities', 'users.id', '=', 'activities.user_id')
+            ->groupBy('users.country', 'users.city')
             ->get();
 
         return view('argon.pages.cities', [
