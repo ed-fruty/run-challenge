@@ -15,7 +15,7 @@
                         <div class="card-profile-image">
                             <a href="javascript:;">
                                 @if($user->photo_url)
-                                    <img src="{{ $user->photo_url }}" class="img-fluid rounded">
+                                    <img src="{{ $user->photo_url }}" class="img-fluid rounded" style="max-height: 150px; max-width: 150px;">
                                 @endif
                             </a>
                         </div>
