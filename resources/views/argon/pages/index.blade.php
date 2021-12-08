@@ -110,8 +110,8 @@
                                     <td><a href="{{ route('users.show', $activity->user->id) }}" class="btn btn-link text-primary">{{ $activity->user->name }} {{ $activity->user->lastname }}</a> </td>
                                     <td>{{ $activity->getTemp() }}</td>
                                     <td>{{ $activity->getDistanceInKm() }} км</td>
-                                    <td>{{ $activity->country }}</td>
-                                    <td>{{ $activity->city }}</td>
+                                    <td>{{ $activity->user->country }}</td>
+                                    <td>{{ $activity->user->city }}</td>
                                     <td>{{ $activity->start_date->format('d.m.Y') }}</td>
                                 </tr>
                             @endforeach
