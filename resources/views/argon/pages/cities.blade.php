@@ -22,8 +22,8 @@
                             <tbody>
                             @foreach($cities as $city)
                                 <tr>
-                                    <td>{{ $city->country ?? 'Не указано' }}</td>
-                                    <td>{{ $city->city ?? 'Не указано' }}</td>
+                                    <td>@if($city->country) {{ $city->country }} @else Не указано @endif</td>
+                                    <td>@if($city->city) {{ $city->city }} @else Не указано @endif</td>
                                     <td>{{ $city->distance }} км</td>
                                     <td>{{ $city->activities_count }}</td>
                                 </tr>
