@@ -43,7 +43,7 @@
                 language: {
                     url: "http://cdn.datatables.net/plug-ins/1.10.20/i18n/Russian.json"
                 },
-                order: [[ 2, "asc" ]],
+                order: [[ 2, "desc" ]],
                 "info":     false,
                 "paging":   false,
             });
