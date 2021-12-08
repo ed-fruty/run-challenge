@@ -81,7 +81,7 @@ class StravaController extends Controller
                 'strava_refresh_token' => $userToken->getRefreshToken(),
                 'strava_token_expires_at' => $userToken->getExpireAt(),
                 'strava_scopes' => $attributes['scope'],
-                'strava_last_synced_at' => Carbon::parse('2020-01-01 00:00:00'),
+                //'strava_last_synced_at' => Carbon::parse('2020-01-01 00:00:00'),
 
                 'photo_url' => $userToken->getProfile(),
                 'country' => $userToken->getCountry(),
@@ -92,11 +92,9 @@ class StravaController extends Controller
 
         auth()->login($user);
 
-        $queryBefore = Carbon::parse(config('app.challenge.finish_date'))->getTimestamp();
-        $queryAfter = Carbon::parse(config('app.challenge.start_date'))->getTimestamp();
-        $activityQuery = new UserActivityQuery(1, 100, $queryBefore, $queryAfter);
+        $query = UserActivityQuery::createForUser($user);
 
-        $this->dispatch(new LoadStravaActivities($user, $activityQuery));
+        $this->dispatch(new LoadStravaActivities($user, $query));
 
         return redirect()->route('home');
     }

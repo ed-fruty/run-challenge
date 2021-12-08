@@ -63,6 +63,9 @@ class LoadStravaActivities implements ShouldQueue
                 'strava_utc_offset' => $response->getUtcOffset(),
                 'strava_moving_time' => $response->getMovingTime(),
             ]);
+
+            $this->user->strava_last_synced_at = now();
+            $this->user->save();
         });
     }
 }

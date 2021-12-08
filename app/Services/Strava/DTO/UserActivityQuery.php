@@ -2,6 +2,9 @@
 
 namespace App\Services\Strava\DTO;
 
+use App\Models\User;
+use Carbon\Carbon;
+
 class UserActivityQuery
 {
     /**
@@ -33,6 +36,26 @@ class UserActivityQuery
         $this->perPage = $perPage;
         $this->before = $before;
         $this->after = $after;
+    }
+
+    /**
+     * @param User $user
+     * @param int $page
+     * @param int $perPage
+     * @return UserActivityQuery
+     */
+    public static function createForUser(User $user, int $page = 1, int $perPage = 100): UserActivityQuery
+    {
+        $queryBefore = Carbon::parse(config('app.challenge.finish_date'));
+        $queryAfter = Carbon::parse(config('app.challenge.start_date'));
+        $stravaLastSyncAt = $user->strava_last_synced_at;
+
+        if ($stravaLastSyncAt instanceof Carbon
+            && $stravaLastSyncAt->diffInMinutes($queryAfter, false) > 0) {
+            $queryAfter = $stravaLastSyncAt;
+        }
+
+        return new self($page, $perPage, $queryBefore->getTimestamp(), $queryAfter->getTimestamp());
     }
 
     /**
