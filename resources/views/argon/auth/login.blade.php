@@ -25,7 +25,7 @@
                             <div class="text-muted text-center mb-3"><small>Войти через</small></div>
                             <div class="text-center">
                                 <a href="{{ route('auth.strava.redirect') }}" class="btn btn-outline-warning btn-icon">
-                                    <span class="btn-inner--icon"><img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/323_Strava_logo-512.png"></span>
+                                    <span class="btn-inner--icon"><img src="https://cdn.iconscout.com/icon/free/png-256/strava-2752062-2284879.png"></span>
                                     <span class="btn-inner--text">Strava</span>
                                 </a>
                             </div>

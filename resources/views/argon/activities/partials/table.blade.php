@@ -5,9 +5,9 @@
         <th>Дата</th>
         <th>Дистанция</th>
         <th>Темп</th>
-        <th>Источник</th>
-        <th>Скришнот</th>
         <th>Время</th>
+        <th>Скришнот</th>
+        <th>Источник</th>
         @if($showActions)
         <th>Действия</th>
         @endif
@@ -20,22 +20,32 @@
             <td>{{ $activity->getDistanceInKm() }} км</td>
             <td>{{ $activity->getTemp() }}</td>
             <td>
-                @if($activity->isManual())
-                    Загружена вручную
-                @else
-                    Загружено автоматически
-                @endif
+                {{ now()->addSeconds($activity->strava_moving_time)->diffInMinutes(now()) }}
+                мин.
             </td>
             <td>
                 @if($activity->image)
-                    <img src="{{ $activity->getFullImage() }}" class="img-fluid img-thumbnail rounded" />
+                    <a href="{{ $activity->getFullImage() }}" target="_blank">
+                        <img src="{{ $activity->getFullImage() }}"
+                             class="img-fluid img-thumbnail rounded shadow"
+                             style="max-width: 150px; max-height: 150px;"
+                             alt="Изображение"
+                        />
+                    </a>
                 @else
                     Нет изображения
                 @endif
             </td>
             <td>
-                {{ now()->addSeconds($activity->strava_moving_time)->diffInMinutes(now()) }}
-                мин.
+                @if($activity->isManual())
+                    <button class="btn btn-outline-primary" disabled>
+                        <i class="fa fa-id-card-o"></i>
+                    </button>
+                @else
+                    <a href="https://strava.com/activities/{{ $activity->strava_id }}" class="btn btn-sm btn-outline-warning" target="_blank">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/strava-2752062-2284879.png" alt="Автоматически" class="img-fluid avatar avatar-sm">
+                    </a>
+                @endif
             </td>
             @if($showActions)
             <td>
